@@ -1,5 +1,4 @@
 from typing import Sequence 
-from heapq import heappush, heappop
 
 filepath = "../data/day2.txt"
 
