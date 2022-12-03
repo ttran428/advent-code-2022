@@ -3,7 +3,7 @@ from heapq import heappush, heappop
 
 filepath = "../data/day1.txt"
 
-def parse_foods(filepath: str) -> Sequence[int]:
+def parse_foods(filepath: str) -> Sequence[str]:
     with open(filepath) as file:
         data = file.read()
         return data.split("\n")
