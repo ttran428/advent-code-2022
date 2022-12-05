@@ -80,4 +80,4 @@ def main2(filepath: str) -> str:
   stacks, instructions = parse_stacks_and_instructions(data)
   return cratemover_9001(stacks, instructions) 
 
-print(main2(filepath))
+assert main2(filepath) == "HZFZCCWWV"
