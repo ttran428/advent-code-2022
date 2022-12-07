@@ -30,7 +30,15 @@ class Tree:
 
     def __repr__(self):
         return f"Tree {self.name} has children {[child.name for child in self.children]}"
-
+    
+    @property
+    def full_name(self) -> str:
+        name = self.name
+        curr_tree = self.parent 
+        while curr_tree:
+            name = curr_tree.name + "/" + name
+            curr_tree = curr_tree.parent 
+        return name
 
 def create_tree(instructions: Sequence[str]) -> Tree:
     i = 0
@@ -68,66 +76,35 @@ def calculate_dir_sizes(dir_tree: Tree, dir_sizes: Dict[str, int]) -> int:
         return dir_tree.value 
     else:
         dir_size = sum([calculate_dir_sizes(child, dir_sizes) for child in dir_tree.children])
-        dir_sizes[dir_tree.name] = dir_size
+        dir_sizes[dir_tree.full_name] = dir_size
         return dir_size
 
 
-def print_tree(tree):
-    print(tree.value)
-    print(type(tree.value))
-    [print_tree(child) for child in tree.children]
-
-def total_file_size(instructions):
-    count = 0
-    for instruction in instructions:
-        try:
-            count += int(instruction.split(" ")[0])
-        except:
-            pass
-    return count
 def main1(filepath: str) -> int:
   instructions = parse_file(filepath)
   dir_tree = create_tree(instructions)
   dir_sizes = {}
   calculate_dir_sizes(dir_tree, dir_sizes) 
-  ted = total_file_size(instructions) # test case to see if im computing at least the root dir size correctly
-  assert ted == dir_sizes["root"]
   return sum([size for size in dir_sizes.values() if size < 100000])
 
-print(main1(filepath))
-#
-# def main2(filepath: str) -> str:
-#   data = parse_file(filepath)  
-#   return start_marker(data[0], distinct_count=14) 
-#
-# assert main2(filepath) == 3645
+assert main1(filepath) == 1297159
 
 
-ted = ["$ cd /",
-"$ ls",
-"dir a",
-"14848514 b.txt",
-"8504156 c.dat",
-"dir d",
-"$ cd a",
-"$ ls",
-"dir e",
-"29116 f",
-"2557 g",
-"62596 h.lst",
-"$ cd e",
-"$ ls",
-"584 i",
-"$ cd ..",
-"$ cd ..",
-"$ cd d",
-"$ ls",
-"4060174 j",
-"8033020 d.log",
-"5626152 d.ext",
-"7214296 k"]
-dir_tree = create_tree(ted) 
-dir_sizes = {}
-# print(calculate_dir_sizes(dir_tree, dir_sizes))
-# print(sum([size for size in dir_sizes.values() if size <= 100000]))
+def smallest_dir_to_delete(dir_sizes: Dict[str, int]) -> int:
+    total_disk_space = 70000000
+    update_space_needed = 30000000
+    root_disk = dir_sizes['root']
+    current_space = total_disk_space - root_disk
+    minimum_space_to_delete = update_space_needed - current_space
+
+    return min([space for space in dir_sizes.values() if space > minimum_space_to_delete])
+
+def main2(filepath: str) -> int:
+  instructions = parse_file(filepath)
+  dir_tree = create_tree(instructions)
+  dir_sizes = {}
+  calculate_dir_sizes(dir_tree, dir_sizes) 
+  return smallest_dir_to_delete(dir_sizes)
+
+assert main2(filepath) == 3866390
 
