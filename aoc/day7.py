@@ -89,13 +89,12 @@ def main1(filepath: str) -> int:
   instructions = parse_file(filepath)
   dir_tree = create_tree(instructions)
   dir_sizes = {}
-  ted = total_file_size(instructions)
   calculate_dir_sizes(dir_tree, dir_sizes) 
-  
+  ted = total_file_size(instructions) # test case to see if im computing at least the root dir size correctly
+  assert ted == dir_sizes["root"]
   return sum([size for size in dir_sizes.values() if size < 100000])
 
 print(main1(filepath))
-# assert main1(filepath) == 1080
 #
 # def main2(filepath: str) -> str:
 #   data = parse_file(filepath)  
