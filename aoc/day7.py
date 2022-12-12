@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Mapping, Sequence, List, Set, Tuple, Dict
 from utils import parse_file
 
-filepath = "../data/day7.txt"
+filepath = "data/day7.txt"
 
 class Tree:
     def __init__(self, name: str, value: int = 0, children: List[Tree] = []):

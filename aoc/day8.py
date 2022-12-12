@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Mapping, Sequence, List, Set, Tuple, Dict, Iterable
 from utils import parse_file, parse_string
 
-filepath = "../data/day8.txt"
+filepath = "data/day8.txt"
 
 def create_graph(data: Sequence[str]) -> List[List[int]]:
     graph = []

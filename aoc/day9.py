@@ -2,7 +2,7 @@
 from typing import Mapping, Sequence, List, Set, Tuple, Dict, Iterable
 from utils import parse_file, parse_string
 
-filepath = "../data/day9.txt"
+filepath = "data/day9.txt"
 
 Coordinate = Tuple[int, int]
 

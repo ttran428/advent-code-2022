@@ -1,6 +1,6 @@
 from typing import Sequence, List, Set 
 
-filepath = "../data/day3.txt"
+filepath = "data/day3.txt"
 
 def parse_file(filepath: str) -> Sequence[str]:
     with open(filepath) as file:

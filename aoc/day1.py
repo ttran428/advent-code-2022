@@ -1,7 +1,7 @@
 from typing import Sequence 
 from heapq import heappush, heappop
 
-filepath = "../data/day1.txt"
+filepath = "data/day1.txt"
 
 def parse_foods(filepath: str) -> Sequence[str]:
     with open(filepath) as file:
