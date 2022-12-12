@@ -1,7 +1,7 @@
 from typing import Sequence, List, Set, Tuple 
 from utils import parse_file
 
-filepath = "../data/day6.txt"
+filepath = "data/day6.txt"
 
 def start_marker(buffer: str, distinct_count: int) -> int:
     window = [] 

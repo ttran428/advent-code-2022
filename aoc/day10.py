@@ -1,7 +1,7 @@
 from typing import Mapping, Sequence, List, Set, Tuple, Dict, Iterable
 from utils import parse_file, parse_string
 
-filepath = "../data/day10.txt"
+filepath = "data/day10.txt"
 
 
 def get_register_values(instructions: Sequence[str]) -> Sequence[int]:

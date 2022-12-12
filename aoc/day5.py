@@ -1,7 +1,7 @@
 
 from typing import Sequence, List, Set, Tuple 
 
-filepath = "../data/day5.txt"
+filepath = "data/day5.txt"
 Stack = List[str]
 
 class Instruction:
