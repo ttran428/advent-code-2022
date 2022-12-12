@@ -38,6 +38,20 @@ def parse_monkeys(data: Sequence[Sequence[str]]) -> Sequence[Monkey]:
 
 
 def get_divisor(monkeys: Sequence[Monkey]) -> int:
+    """Deals with integer overflow: since we keep multiplying and adding numbers with no worry factor.
+    But how do we keep the integers from overflowing? An appropriate guess here is to use the modspace. 
+
+
+    How do we know that a mod space is a valid way to reduce numbers? It's definitely a good starting point, but how do we know we are on the right path. I think that the key insight here is that in the problem, we don't care about the actual worry levels of the items, but only whether or not `self.test` returns the correct monkey after computing `self.operation`. If the test was instead not just divisibility but "edge case: if worry_level == 10e10000 throw to monkey 7", then the mod space would not work (by itself, at least). 
+
+    But what mod space do we choose? We need to pick one that keeps all of our operations having the same result. The operations we must maintain are: multiplication and addition (for the `self.operation`) and division (for `self.test`). 
+
+    Noting that the operation for `self.test` is always a divisible check by the monkey's divisor, this leads us to the idea that we can use the divisor as the mod space, since for any X, X % mod % mod == X % mod. Note also that for multiplication and addition for `self.operation`, this holds true as well. Also note that this is not a full proof of why this works. I did not think of a full theorem  while doing this problem, but looked for a good proof to link afterwards, and I believe [this explanation](https://github.com/jake-gordon/aoc/blob/main/2022/D11/Explanation.md) is a formal proof that justifies this well.
+
+    Is this the answer though? Unfortunately not, since each monkey has a different mod space. The solutiohn to this hurdle is to find the LCM of all of the divisors, but here I have opted to simply multiple all of the divisors since we don't really care about the LCM, but just the CMself.
+
+    A fun note here is that I also tried using `math.lcm` to make sure my logic worked. And it did, but the more interesting observation is that `math.lcm(divisors)` is the same as the implementation here with multiplying all of the divisors. Why is this? Because all of the divisors are prime!"""
+
     divisor = 1
     for monkey in monkeys:
         divisor *= monkey.test_divisor
@@ -55,8 +69,7 @@ def get_monkey_activity(monkeys: Sequence[Monkey], decrease_worry_levels: bool, 
                 if decrease_worry_levels:
                     item = item // 3
                 else:
-                    if monkey.test(item) != monkey.test(item % divisor):
-                        breakpoint()
+                    # read docstring for `get_divisor` to understand logic
                     item = item % divisor 
                 
                 monkey_to_throw_to = monkey.test(item)
@@ -89,41 +102,5 @@ def main2(filepath: str) -> int:
 
     return get_monkey_business(monkey_activity)
 
-print(main2(filepath))
-# assert main2(filepath) == 69918 
+assert main2(filepath) == 19573408701
 
-
-example = """Monkey 0:
-  Starting items: 79, 98
-  Operation: new = old * 19
-  Test: divisible by 23
-    If true: throw to monkey 2
-    If false: throw to monkey 3
-
-Monkey 1:
-  Starting items: 54, 65, 75, 74
-  Operation: new = old + 6
-  Test: divisible by 19
-    If true: throw to monkey 2
-    If false: throw to monkey 0
-
-Monkey 2:
-  Starting items: 79, 60, 97
-  Operation: new = old * old
-  Test: divisible by 13
-    If true: throw to monkey 1
-    If false: throw to monkey 3
-
-Monkey 3:
-  Starting items: 74
-  Operation: new = old + 3
-  Test: divisible by 17
-    If true: throw to monkey 0
-    If false: throw to monkey 1"""
-
-data = parse_by_split_lines(example, string=True)
-monkeys = parse_monkeys(data)
-monkey_activity = get_monkey_activity(monkeys, decrease_worry_levels=False, rounds=20)
-print(monkey_activity)
-monkey_activity = get_monkey_activity(monkeys, decrease_worry_levels=False, rounds=1000)
-print(monkey_activity)
